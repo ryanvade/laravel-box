@@ -1,8 +1,6 @@
 <?php
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
-use LaravelBox\Commands\Files\AbstractFileCommand;
 
 namespace LaravelBox\Commands\Files;
 
@@ -18,7 +16,7 @@ class GetFileInformationCommand extends AbstractFileCommand
         $url = "https://api.box.com/2.0/files/${$this->fileId}";
         $headers = [
           'headers' => [
-            'Authorization' => "Bearer ${$this->token}"
+            'Authorization' => "Bearer ${$this->token}",
           ],
         ];
         $client = parent::getInstance();
@@ -29,13 +27,12 @@ class GetFileInformationCommand extends AbstractFileCommand
     {
         $resp = $this->execute();
         $status = [];
-        if(!$resp instanceof Response )
-          $status['success'] = 'error';
-        else
-        {
-          $status['success'] = $resp->getReasonPhrase();
-          $status['status-code'] = $resp->getStatusCode();
-          $status['body'] = $resp->getBody();
+        if (! $resp instanceof Response ) {
+            $status['success'] = 'error';
+        } else {
+            $status['success'] = $resp->getReasonPhrase();
+            $status['status-code'] = $resp->getStatusCode();
+            $status['body'] = $resp->getBody();
         }
         return $status;
     }
