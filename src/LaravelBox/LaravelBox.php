@@ -2,6 +2,6 @@
 
 namespace LaravelBox;
 
-class LaravelBox {
-  
+class LaravelBox
+{
 }

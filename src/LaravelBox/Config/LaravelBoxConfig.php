@@ -1,6 +1,5 @@
 <?php
 
-use LaravelBox\LaravelBoxServiceProvider;
 
 return [
   /*
