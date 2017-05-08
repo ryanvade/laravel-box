@@ -22,7 +22,7 @@ abstract class AbstractFileCommand implements CommandInterface
 
     protected function getInstance()
     {
-        if($this->clientInstance == null) {
+        if ($this->clientInstance == null) {
             $this->clientInstance = new Client();
         }
         return $this->clientInstance;

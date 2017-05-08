@@ -27,7 +27,7 @@ class GetFileInformationCommand extends AbstractFileCommand
     {
         $resp = $this->execute();
         $status = [];
-        if (! $resp instanceof Response ) {
+        if (! $resp instanceof Response) {
             $status['success'] = 'error';
         } else {
             $status['success'] = $resp->getReasonPhrase();
