@@ -4,7 +4,6 @@ namespace LaravelBox\Comamnds;
 
 interface CommandInterface
 {
-  function execute();
-  function getResult();
-  
+    public function execute();
+    public function getResult();
 }
