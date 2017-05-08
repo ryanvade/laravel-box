@@ -4,15 +4,18 @@ namespace LaravelBox;
 
 use illuminate\Support\ServiceProvider;
 
-class LaravelBoxServiceProvider extends ServiceProvider {
-  public function boot() {
-    // configuration files
+class LaravelBoxServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        // configuration files
     $this->publishes([
-      __DIR__ . '/Config/LaravelBoxConfig.php' => config_path('laravelbox.php'),
+      __DIR__.'/Config/LaravelBoxConfig.php' => config_path('laravelbox.php'),
     ]);
-  }
+    }
 
-  public function register() {
-    // CODE
-  }
+    public function register()
+    {
+        // CODE
+    }
 }
