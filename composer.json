@@ -1,0 +1,25 @@
+
+{
+    "name": "ryanvade/laravel-box",
+    "description": "A Box.com API wrapper for Laravel.",
+    "version": "0.0.1",
+    "type": "library",
+    "require": {
+        "illuminate/support": "^5.2",
+        "illuminate/database": "^5.2",
+        "doctrine/dbal": "^2.5",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Owens",
+            "email": "RyanOwens@linux.com"
+        }
+    ],
+    "autoload": {
+      "psr-4": {
+        "LaravelBox\\": "src/LaravelBox"
+      }
+    }
+}
