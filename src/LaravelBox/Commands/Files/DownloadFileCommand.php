@@ -7,6 +7,7 @@ namespace LaravelBox\Commands\Files;
 class GetFileInformationCommand extends AbstractFileCommand
 {
     private $storageLocation;
+
     public function __construct(string $token, string $fileId, string $storageLocation)
     {
         parent::__construct($token, $fileId);
@@ -23,6 +24,7 @@ class GetFileInformationCommand extends AbstractFileCommand
           ],
         ];
         $client = parent::getInstance();
+
         return $client->get($url, $options);
     }
 
@@ -30,13 +32,14 @@ class GetFileInformationCommand extends AbstractFileCommand
     {
         $resp = $this->execute();
         $status = [];
-        if (! $resp instanceof Response) {
+        if (!$resp instanceof Response) {
             $status['success'] = 'error';
         } else {
             $status['success'] = $resp->getReasonPhrase();
             $status['status-code'] = $resp->getStatusCode();
             $status['body'] = $resp->getBody();
         }
+
         return $status;
     }
 }

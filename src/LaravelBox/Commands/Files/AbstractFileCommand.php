@@ -25,6 +25,7 @@ abstract class AbstractFileCommand implements CommandInterface
         if ($this->clientInstance == null) {
             $this->clientInstance = new Client();
         }
+
         return $this->clientInstance;
     }
 }

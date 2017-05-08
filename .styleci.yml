@@ -2,6 +2,8 @@ preset: laravel
 
 risky: false
 
+linting: true
+
 finder:
   exclude:
     - "tests"

@@ -20,6 +20,7 @@ class GetFileInformationCommand extends AbstractFileCommand
           ],
         ];
         $client = parent::getInstance();
+
         return $client->get($url, $headers);
     }
 
@@ -27,13 +28,14 @@ class GetFileInformationCommand extends AbstractFileCommand
     {
         $resp = $this->execute();
         $status = [];
-        if (! $resp instanceof Response) {
+        if (!$resp instanceof Response) {
             $status['success'] = 'error';
         } else {
             $status['success'] = $resp->getReasonPhrase();
             $status['status-code'] = $resp->getStatusCode();
             $status['body'] = $resp->getBody();
         }
+
         return $status;
     }
 }
