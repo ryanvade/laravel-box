@@ -91,25 +91,32 @@ class MoveFileCommand extends AbstractFileCommand
 
     private function uploadFile()
     {
-        $url = 'https://api.box.com/2.0/files/content';
-        $name = basename($this->newPath);
-        $parentId = $this->getFolderId(dirname($this->newPath));
-        $options = [
-            'multipart' => [
-                'name' => $name,
-                'parent' => [
-                    'id' => $parentId,
-                ],
-            ],
-            'headers' => [
-                'Authorization' => "Bearer ${$this->token}",
-            ],
+        $cr = curl_init();
+        $headers = [
+            'Content-Type: multipart/form-data',
+            "Authorization: Bearer ${$this->token}",
         ];
+        curl_setopt($cr, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($cr, CURLOPT_URL, 'https://upload.box.com/api/2.0/files/content');
+        $json = json_encode([
+            'name' => basename($this->path),
+            'parent' => [
+                'id' => $this->getFolderId(dirname($this->newPath)),
+            ],
+        ]);
+        $fields = [
+            'attributes' => $json,
+            'file' => new CurlFile(basename($this->localPath), mime_content_type(basename($this->path)), basename($this->newPath)),
+        ];
+        curl_setopt($cr, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($cr, CURLOPT_POSTFIELDS, $fields);
         try {
-            $resp = $client->request('POST', $url, $options);
-            // return API Response
-        } catch (ClientException $e) {
-            // return API Response from exception
+            $response = curl_exec($cr);
+            // TODO return API Response
+        } catch (Exception $e) {
+            // TODO return API Response
+        } finally {
+            curl_close($cr);
         }
     }
 }
