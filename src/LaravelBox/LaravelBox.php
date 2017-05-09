@@ -15,7 +15,21 @@ class LaravelBox
 
     public function move(string $path, string $newPath)
     {
-        $command = CommandFactory::create($token, $path, $newPath, 'move');
+        $command = CommandFactory::createFileCommand($token, $path, $newPath, 'move');
+
+        return $command->execute();
+    }
+
+    public function fileInformation(string $path)
+    {
+        $command = CommandFactory::createFileCommand($token, $path, 'info');
+
+        return $command->execute();
+    }
+
+    public function fileDownload(string $path)
+    {
+        $command = CommandFactory::createFileCommand($token, $path, 'download');
 
         return $command->execute();
     }

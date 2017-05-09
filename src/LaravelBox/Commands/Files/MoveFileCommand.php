@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LaravelBox\Commands\Files;
 
 class MoveFileCommand extends AbstractFileCommand
