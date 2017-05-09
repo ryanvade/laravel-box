@@ -68,4 +68,11 @@ class LaravelBox
 
         return $command->execute();
     }
+
+    public function toggleFileLock(string $path)
+    {
+        $command = CommandFactory::createFileCommand($token, $path, 'toggle-lock');
+
+        return $command->execute();
+    }
 }

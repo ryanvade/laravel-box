@@ -95,6 +95,17 @@ class CommandFactory
 
             return new CopyFileCommand($token, $path, $newPath);
             break;
+
+            case 'toggle-lock':
+            if (func_num_args() < 3) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+
+            return new ToggleFileLockCommand($token, $path);
+            break;
+
             default:
                 return null;
                 break;
