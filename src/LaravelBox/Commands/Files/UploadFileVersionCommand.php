@@ -22,7 +22,7 @@ class UploadFileVersionCommand extends AbstractFileCommand
             "Authorization: Bearer ${$this->token}",
         ];
         curl_setopt($cr, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($cr, CURLOPT_URL, 'https://upload.box.com/api/2.0/files/' . $this->fileId . '/content');
+        curl_setopt($cr, CURLOPT_URL, 'https://upload.box.com/api/2.0/files/'.$this->fileId.'/content');
         $json = json_encode([
             'name' => basename($this->localPath),
             'parent' => [
