@@ -33,4 +33,18 @@ class LaravelBox
 
         return $command->execute();
     }
+
+    public function uploadFile(string $localPath, string $remotePath)
+    {
+        $command = CommandFactory::createFileCommand($token, $localPath, $remotePath, 'upload');
+
+        return $command->execute();
+    }
+
+    public function uploadFileVersion(string $localPath, string $remotePath)
+    {
+        $command = CommandFactory::createFileCommand($token, $localPath, $remotePath, 'upload-version');
+
+        return $command->execute();
+    }
 }
