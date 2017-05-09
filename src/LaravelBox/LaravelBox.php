@@ -54,4 +54,18 @@ class LaravelBox
 
         return $command->execute();
     }
+
+    public function deleteFile(string $path)
+    {
+        $command = CommandFactory::createFileCommand($token, $localPath, $remotePath, 'delete');
+
+        return $command->execute();
+    }
+
+    public function copyFile(string $path, string $newPath)
+    {
+        $command = CommandFactory::createFileCommand($token, $path, $newPath, 'copy');
+
+        return $command->execute();
+    }
 }

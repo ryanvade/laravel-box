@@ -75,6 +75,26 @@ class CommandFactory
             return new PreflightCheckCommand($token, $localPath, $remotePath);
                 break;
 
+            case 'delete':
+            if (func_num_args() < 3) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(2);
+
+            return new DeleteFileCommand($token, $path);
+                break;
+
+            case 'copy':
+            if (func_num_args() < 4) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+            $newPath = func_get_arg(2);
+
+            return new CopyFileCommand($token, $path, $newPath);
+            break;
             default:
                 return null;
                 break;
