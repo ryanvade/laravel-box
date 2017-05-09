@@ -1,31 +1,18 @@
 <?php
 
-use LaravelBox\Commands\CommandInterface;
+use LaravelBox\Commands\AbstractCommand;
 
-namespace LaravelBox\Commands\Files;
+namespace LaravelBox\Comamnds\Files;
 
-abstract class AbstractFileCommand implements CommandInterface
+abstract class AbstractFileCommand extends AbstractCommand
 {
-    protected $token;
     protected $fileId;
-    private static $clientInstance = null;
+    protected $parentId;
 
-    abstract protected function execute();
-
-    abstract protected function getResult();
-
-    public function __construct(string $token, string $fileId)
+    protected function __construct(string $token, string $fileId, string $parentId)
     {
-        $this->token = $token;
         $this->fileId = $fileId;
-    }
-
-    protected function getInstance()
-    {
-        if ($this->clientInstance == null) {
-            $this->clientInstance = new Client();
-        }
-
-        return $this->clientInstance;
+        $this->parentId = $parentId;
+        $this->token = $token;
     }
 }
