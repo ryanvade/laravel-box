@@ -64,6 +64,17 @@ class CommandFactory
             return new UploadFileVersionCommand($token, $localPath, $remotePath);
                 break;
 
+            case 'flight-check':
+            if (func_num_args() < 4) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $localPath = func_get_arg(1);
+            $remotePath = func_get_arg(2);
+
+            return new PreflightCheckCommand($token, $localPath, $remotePath);
+                break;
+
             default:
                 return null;
                 break;

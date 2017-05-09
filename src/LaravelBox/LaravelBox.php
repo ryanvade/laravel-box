@@ -47,4 +47,11 @@ class LaravelBox
 
         return $command->execute();
     }
+
+    public function preflightCheck(string $localPath, string $remotePath)
+    {
+        $command = CommandFactory::createFileCommand($token, $localPath, $remotePath, 'flight-check');
+
+        return $command->execute();
+    }
 }
