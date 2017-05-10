@@ -75,4 +75,18 @@ class LaravelBox
 
         return $command->execute();
     }
+
+    public function getThumbnail(string $path, string $outPath, string $extension)
+    {
+        $command = CommandFactory::createFileCommand($token, $path, $outpath, $extension, 'thumbnail');
+
+        return $command->execute();
+    }
+
+    public function fileEmbeddedLinkCommand(string $path)
+    {
+        $command = CommandFactory::createFileCommand($token, $path, 'embed-link');
+
+        return $command;
+    }
 }

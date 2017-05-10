@@ -106,6 +106,28 @@ class CommandFactory
             return new ToggleFileLockCommand($token, $path);
             break;
 
+            case 'thumbnail':
+            if (func_num_args() < 4) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+            $outPath = func_get_arg(2);
+            $extension = func_get_arg(3);
+
+            return new FileThumbnailCommand($token, $path, $outPath, $extension);
+            break;
+
+            case 'embed-link':
+            if (func_num_args() < 3) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+
+            return new FileEmbeddedLinkCommand($token, $path);
+            break;
+
             default:
                 return null;
                 break;
