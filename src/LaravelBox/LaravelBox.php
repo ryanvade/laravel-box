@@ -83,10 +83,17 @@ class LaravelBox
         return $command->execute();
     }
 
-    public function fileEmbeddedLinkCommand(string $path)
+    public function fileEmbeddedLink(string $path)
     {
         $command = CommandFactory::createFileCommand($token, $path, 'embed-link');
 
-        return $command;
+        return $command->execute();
+    }
+
+    public function fileComments(string $path)
+    {
+        $command = CommandFactory::createFileCommand($token, $path, 'comments');
+
+        return $command->execute();
     }
 }

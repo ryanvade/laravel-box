@@ -128,6 +128,35 @@ class CommandFactory
             return new FileEmbeddedLinkCommand($token, $path);
             break;
 
+            case 'collaborations':
+            if (func_num_args() < 3) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+
+            return new FileCollaborationsCommand($token, $path);
+            break;
+
+            case 'comments':
+            if (func_num_args() < 3) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+
+            return new FileCommentsCommand($token, $path);
+            break;
+
+            case 'tasks':
+            if (func_num_args() < 3) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+
+            return new FileTasksCommand($token, $path);
+            break;
             default:
                 return null;
                 break;
