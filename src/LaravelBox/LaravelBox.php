@@ -1,8 +1,9 @@
 <?php
 
-use LaravelBox\Factories\CommandFactory;
 
-namespace LaravelBox;
+use \LaravelBox\Factories\CommandFactory;
+
+namespace \LaravelBox;
 
 class LaravelBox
 {
