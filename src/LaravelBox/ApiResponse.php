@@ -4,59 +4,103 @@ namespace LaravelBox;
 
 class ApiResponse
 {
-    private $statusCode;
-    private $message;
-    private $contentBody;
-    private $contentLocation;
-    private $isFile;
+    private $type = null;
+    private $code = null;
+    private $message = null;
+    private $body = null;
+    private $json = null;
+    private $request = null;
+    private $reason = null;
+    private $exception = null;
+    private $fileName = null;
+
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
 
     public function isError()
     {
-        return $this->statusCode >= 400 && $this->statusCode < 600;
+        return ($this->type == 'errors') || ($this->code > 399) || ($this->exception != null);
     }
 
-    public function getStatusCode()
+    public function setCode($code)
     {
-        return $this->statusCode;
+        $this->code = $code;
     }
 
-    public function setStatusCode(integer $code)
+    public function getCode()
     {
-        $this->statusCode = $code;
+        return $this->code();
     }
 
-    public function getContentBody()
+    public function setMessage($message)
     {
-        return $this->contentBody;
+        $this->message = $message;
     }
 
-    public function setContentBody(string $content)
+    public function getMessage()
     {
-        $this->contentBody = $content;
+        return $this->message;
     }
 
-    public function isFile()
+    public function setBody($body)
     {
-        return $this->isFile;
+        $this->body = $body;
     }
 
-    public function setIsFile(bool $isFile)
+    public function getBody()
     {
-        $this->isFile = $isFile;
+        return $this->body;
     }
 
-    public function getFileLocation()
+    public function setJson($json)
     {
-        if ($this->isFile == false) {
-            return false;
-        }
-
-        return $this->contentLocation;
+        $this->json = $json;
     }
 
-    public function setFileLocation(string $location)
+    public function getJson()
     {
-        $this->contentLocation = $location;
-        $this->isFile = true;
+        return $this->json;
+    }
+
+    public function setRequest($request)
+    {
+        $this->request = $request;
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    public function setReason($reason)
+    {
+        $this->reason = $reason;
+    }
+
+    public function getReason()
+    {
+        return $this->reason;
+    }
+
+    public function setException($exception)
+    {
+        $this->exception = $exception;
+    }
+
+    public function getException()
+    {
+        return $this->exception;
+    }
+
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+    }
+
+    public function getFileName()
+    {
+        return $this->fileName;
     }
 }

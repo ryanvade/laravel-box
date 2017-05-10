@@ -1,5 +1,7 @@
 <?php
 
+use LaravelBox\Factories\ApiResponseFactory;
+
 namespace LaravelBox\Commands\Files;
 
 class GetFileInformationCommand extends AbstractFileCommand
@@ -21,9 +23,16 @@ class GetFileInformationCommand extends AbstractFileCommand
         try {
             $client = new Client();
             $resp = $client->request('GET', $url, $options);
-            //TODO return API Response
+
+            return ApiResponseFactory::build($req);
         } catch (ClientException $e) {
-            // TODO return API Response
+            return ApiResponseFactory::build($e);
+        } catch (ServerException $e) {
+            return ApiResponseFactory::build($e);
+        } catch (TransferException $e) {
+            return ApiResponseFactory($e);
+        } catch (RequestException $e) {
+            return ApiResponseFactory($e);
         }
     }
 }

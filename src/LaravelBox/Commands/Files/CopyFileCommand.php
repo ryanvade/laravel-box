@@ -1,5 +1,7 @@
 <?php
 
+use LaravelBox\Factories\ApiResponseFactory;
+
 namespace LaravelBox\Commands\Files;
 
 class CopyFileCommand extends AbstractFileCommand
@@ -29,9 +31,16 @@ class CopyFileCommand extends AbstractFileCommand
         try {
             $client = new Client();
             $req = $client->request('POST', $url, $options);
-            // TODO Request API Response
+
+            return ApiResponseFactory::build($req);
         } catch (ClientException $e) {
-            // TODO Request API Response
+            return ApiResponseFactory::build($e);
+        } catch (ServerException $e) {
+            return ApiResponseFactory::build($e);
+        } catch (TransferException $e) {
+            return ApiResponseFactory($e);
+        } catch (RequestException $e) {
+            return ApiResponseFactory($e);
         }
     }
 }

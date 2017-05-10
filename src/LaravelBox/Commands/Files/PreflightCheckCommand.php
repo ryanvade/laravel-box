@@ -1,5 +1,7 @@
 <?php
 
+use LaravelBox\Factories\ApiResponseFactory;
+
 namespace LaravelBox\Commands\Files;
 
 class PreflightCheckCommand extends AbstractFileCommand
@@ -35,9 +37,10 @@ class PreflightCheckCommand extends AbstractFileCommand
         curl_setopt($cr, CURLOPT_POSTFIELDS, $fields);
         try {
             $response = curl_exec($cr);
-            // TODO return API Response
+
+            return ApiResponseFactory::build($response);
         } catch (Exception $e) {
-            // TODO return API Response
+            return ApiResponseFactory::build($e);
         } finally {
             curl_close($cr);
         }

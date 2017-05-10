@@ -1,5 +1,7 @@
 <?php
 
+use LaravelBox\Factories\ApiResponseFactory;
+
 namespace LaravelBox\Commands\Files;
 
 class UploadFileCommand extends AbstractFileCommand
@@ -37,9 +39,10 @@ class UploadFileCommand extends AbstractFileCommand
         curl_setopt($cr, CURLOPT_POSTFIELDS, $fields);
         try {
             $response = curl_exec($cr);
-            // TODO return API Response
+
+            return ApiResponseFactory::build($response);
         } catch (Exception $e) {
-            // TODO return API Response
+            return ApiResponseFactory::build($e);
         } finally {
             curl_close($cr);
         }
