@@ -1,26 +1,35 @@
 <?php
 
-use LaravelBox\Factories\ApiResponseFactory;
-
 namespace LaravelBox\Commands\Files;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
+use LaravelBox\Factories\ApiResponseFactory;
 
 class DownloadFileCommand extends AbstractFileCommand
 {
     private $downloadPath;
 
-    public function __construct(string $token, string $path, string $downloadPath)
+    public function __construct(string $token, string $local, string $remote)
     {
-        $this->downloadPath = $downloadPath;
-        parent::_construct($token, $this->getFileId(basename($path)), $this->getFolderId(dirname($path)));
+        $this->downloadPath = $local;
+        $this->token = $token;
+        $this->fileId = parent::getFileId($remote);
+        $this->folderId = parent::getFolderId(dirname($remote));
     }
 
     public function execute()
     {
-        $url = "https://api.box.com/2.0/files/${$this->fileId}/content";
-        $optons = [
+        $fileId = $this->fileId;
+        $token = $this->token;
+        $url = "https://api.box.com/2.0/files/${fileId}/content";
+        $options = [
             'sink' => fopen($this->downloadPath, 'w'),
             'headers' => [
-                'Authorization' => "Bearer ${$this->token}",
+                'Authorization' => "Bearer ${token}",
             ],
         ];
         try {

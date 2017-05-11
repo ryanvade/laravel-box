@@ -1,30 +1,42 @@
 <?php
 
-use LaravelBox\Factories\ApiResponseFactory;
-
 namespace LaravelBox\Commands\Files;
 
-class ToggleFileLockCommand extends AbstractFileCommand
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
+use LaravelBox\Factories\ApiResponseFactory;
+
+class UnLockFileCommand extends AbstractFileCommand
 {
     public function __construct(string $token, string $path)
     {
-        parent::__construct($token, $this->getFileId(basename($path)), $this->getFolderId(dirname($path)));
+        $this->token = $token;
+        $this->fileId = parent::getFileId($path);
+        $this->folderId = parent::getFolderId(dirname($path));
     }
 
     public function execute()
     {
-        $url = "https://api.box.com/2.0/files/${$this->token}";
+        $token = $this->token;
+        $fileId = $this->fileId;
+        $url = "https://api.box.com/2.0/files/${fileId}";
         $body = [
             'lock' => [
-                'type' => 'lock',
+                'type' => null,
                 //TODO Lock Expiration Date
                 //TODO Lock Download Prevented
             ],
         ];
         $options = [
-            'body' => $body,
+            'body' => json_encode($body),
+            'query' => [
+                'fields' => 'lock',
+            ],
             'headers' => [
-                'Authorization' => "Bearer ${$this->token}",
+                'Authorization' => "Bearer ${token}",
             ],
         ];
         try {

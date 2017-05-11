@@ -19,6 +19,11 @@ class ApiResponse
         $this->type = $type;
     }
 
+    public function getType()
+    {
+        return $this->type;
+    }
+
     public function isError()
     {
         return ($this->type == 'errors') || ($this->code > 399) || ($this->exception != null);
@@ -31,7 +36,7 @@ class ApiResponse
 
     public function getCode()
     {
-        return $this->code();
+        return $this->code;
     }
 
     public function setMessage($message)

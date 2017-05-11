@@ -9,13 +9,15 @@ use Illuminate\Contracts\Cache\Repository as Cache;
 
 abstract class AbstractCommand
 {
-    protected $token;
+    public $token;
 
     abstract protected function execute();
 
-    protected function getFileId(string $path)
+    public function getFileId(string $path)
     {
         if (basename($path) == '') {
+            echo "Basename == ''";
+
             return -1;
         }
         // if (Cache::has($path)) {
@@ -27,7 +29,10 @@ abstract class AbstractCommand
             // if not root
             $folderId = $this->getFolderId($folder);
         }
+        echo 'FolderID: '.$folderId."\n";
         if (($item_count = $this->getFolderItemCount($folderId)) < 0) {
+            echo 'Item count '.$item_count."\n";
+
             return -1;
         }
         $fileId = -1;
@@ -46,7 +51,7 @@ abstract class AbstractCommand
         return $fileId;
     }
 
-    protected function getFolderId(string $path)
+    public function getFolderId(string $path)
     {
         if (dirname($path) == '.') {
             return -1;
@@ -66,10 +71,10 @@ abstract class AbstractCommand
         return $this->recursiveFolderIdFind(0, implode('/', array_slice($exp, 1)), $exp[$exp_cnt - 1]);
     }
 
-    protected function cacheId(integer $id, string $path)
+    public function cacheId($id, string $path)
     {
         // To be compatible with AWS QUEUE service, 30 minutes are used
-        Cache::put($path, $id, Carbon::now()->addMinutes(30));
+        //Cache::put($path, $id, Carbon::now()->addMinutes(30));
     }
 
     public function fileExists(string $fileId)
@@ -108,12 +113,16 @@ abstract class AbstractCommand
         }
     }
 
-    private function getFolderItemCount($folderId)
+    public function getFolderItemCount($folderId)
     {
         if ($folderId < 0) {
+            echo "Folder ID < 0\n";
+
             return -1;
         }
+
         $token = $this->token;
+        echo 'TOKEN: '.$token."\n";
         $url = "https://api.box.com/2.0/folders/${folderId}";
         $options = [
             'headers' => [
@@ -126,12 +135,16 @@ abstract class AbstractCommand
             $json = json_decode($req->getBody());
 
             return $json->item_collection->total_count;
-        } catch (Exception $e) {
+        } catch (ClientException $e) {
+            echo "Client Exception\n";
+            echo $e->getMessage();
+            echo "\n";
+
             return -1;
         }
     }
 
-    private function getFolderItems($folderId, $offset, $limit)
+    public function getFolderItems($folderId, $offset, $limit)
     {
         $limit_min = 100;
         $limit_max = 1000;
@@ -157,7 +170,7 @@ abstract class AbstractCommand
         }
     }
 
-    private function recursiveFolderIdFind($search_folder_id, $search_path, $final_folder)
+    public function recursiveFolderIdFind($search_folder_id, $search_path, $final_folder)
     {
         $exp = explode('/', $search_path);
         $find_folder = $exp[0];

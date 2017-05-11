@@ -1,18 +1,11 @@
 <?php
 
-use LaravelBox\Commands\AbstractCommand;
+namespace LaravelBox\Commands\Files;
 
-namespace LaravelBox\Comamnds\Files;
+use LaravelBox\Commands\AbstractCommand;
 
 abstract class AbstractFileCommand extends AbstractCommand
 {
     protected $fileId;
     protected $parentId;
-
-    protected function __construct(string $token, string $fileId, string $parentId)
-    {
-        $this->fileId = $fileId;
-        $this->parentId = $parentId;
-        $this->token = $token;
-    }
 }

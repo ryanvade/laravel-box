@@ -1,6 +1,6 @@
 <?php
 
-use LaravelBox\Commands\AbstractCommand;
+use \LaravelBox\Commands\AbstractCommand;
 
 namespace LaravelBox\Commands\Folders;
 

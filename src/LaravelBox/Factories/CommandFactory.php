@@ -2,6 +2,20 @@
 
 namespace LaravelBox\Factories;
 
+use LaravelBox\Commands\Files\MoveFileCommand;
+use LaravelBox\Commands\Files\CopyFileCommand;
+use LaravelBox\Commands\Files\FileTasksCommand;
+use LaravelBox\Commands\Files\UnLockFileCommand;
+use LaravelBox\Commands\Files\UploadFileCommand;
+use LaravelBox\Commands\Files\DeleteFileCommand;
+use LaravelBox\Commands\Files\DownloadFileCommand;
+use LaravelBox\Commands\Files\FileCommentsCommand;
+use LaravelBox\Commands\Files\FileThumbnailCommand;
+use LaravelBox\Commands\Files\PreflightCheckCommand;
+use LaravelBox\Commands\Files\FileEmbeddedLinkCommand;
+use LaravelBox\Commands\Files\UploadFileVersionCommand;
+use LaravelBox\Commands\Files\GetFileInformationCommand;
+
 class CommandFactory
 {
     public static function createFileCommand()
@@ -33,13 +47,14 @@ class CommandFactory
                 break;
 
             case 'download':
-            if (func_num_args() < 3) {
+            if (func_num_args() < 4) {
                 return null;
             }
             $token = func_get_arg(0);
-            $path = func_get_arg(1);
+            $local = func_get_arg(1);
+            $remote = func_get_arg(2);
 
-            return new DownloadFileCommand($token, $path);
+            return new DownloadFileCommand($token, $local, $remote);
                 break;
 
             case 'upload':
@@ -80,7 +95,7 @@ class CommandFactory
                 return null;
             }
             $token = func_get_arg(0);
-            $path = func_get_arg(2);
+            $path = func_get_arg(1);
 
             return new DeleteFileCommand($token, $path);
                 break;
@@ -96,18 +111,28 @@ class CommandFactory
             return new CopyFileCommand($token, $path, $newPath);
             break;
 
-            case 'toggle-lock':
+            case 'file-lock':
             if (func_num_args() < 3) {
                 return null;
             }
             $token = func_get_arg(0);
             $path = func_get_arg(1);
 
-            return new ToggleFileLockCommand($token, $path);
+            return new LockFileCommand($token, $path);
+            break;
+
+            case 'file-unlock':
+            if (func_num_args() < 3) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+
+            return new UnLockFileCommand($token, $path);
             break;
 
             case 'thumbnail':
-            if (func_num_args() < 4) {
+            if (func_num_args() < 5) {
                 return null;
             }
             $token = func_get_arg(0);

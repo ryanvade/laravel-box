@@ -1,8 +1,8 @@
 <?php
 
-use LaravelBox\Factories\ApiResponseFactory;
-
 namespace LaravelBox\Commands\Files;
+
+use LaravelBox\Factories\ApiResponseFactory;
 
 class UploadFileVersionCommand extends AbstractFileCommand
 {
@@ -11,20 +11,22 @@ class UploadFileVersionCommand extends AbstractFileCommand
 
     public function __construct(string $token, string $localPath, string $remotePath)
     {
-        parent::_construct($token, $this->getFileId(basename($remotePath)), $this->getFolderId(dirname($remotePath)));
+        $this->token = $token;
         $this->localPath = $localPath;
         $this->remotePath = $remotePath;
     }
 
     public function execute()
     {
+        $token = $this->token;
+        $fileId = parent::getFileId($this->remotePath);
         $cr = curl_init();
         $headers = [
             'Content-Type: multipart/form-data',
-            "Authorization: Bearer ${$this->token}",
+            "Authorization: Bearer ${token}",
         ];
         curl_setopt($cr, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($cr, CURLOPT_URL, 'https://upload.box.com/api/2.0/files/'.$this->fileId.'/content');
+        curl_setopt($cr, CURLOPT_URL, "https://upload.box.com/api/2.0/files/${fileId}/content");
         $json = json_encode([
             'name' => basename($this->localPath),
             'parent' => [
@@ -33,7 +35,7 @@ class UploadFileVersionCommand extends AbstractFileCommand
         ]);
         $fields = [
             'attributes' => $json,
-            'file' => new CurlFile(basename($this->localPath), mime_content_type(basename($this->localPath)), basename($this->remotePath)),
+            'file' => new \CurlFile(basename($this->localPath), mime_content_type(basename($this->localPath)), basename($this->remotePath)),
         ];
         curl_setopt($cr, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($cr, CURLOPT_POSTFIELDS, $fields);

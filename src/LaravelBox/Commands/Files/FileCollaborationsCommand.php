@@ -1,6 +1,6 @@
 <?php
 
-use LaravelBox\Factories\ApiResponseFactory;
+use \LaravelBox\Factories\ApiResponseFactory;
 
 namespace LaravelBox\Commands\Files;
 

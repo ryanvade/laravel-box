@@ -4,9 +4,12 @@ namespace LaravelBox\Commands\Files;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
 use LaravelBox\Factories\ApiResponseFactory;
 
-class GetFileInformationCommand extends AbstractFileCommand
+class LockFileCommand extends AbstractFileCommand
 {
     public function __construct(string $token, string $path)
     {
@@ -17,19 +20,25 @@ class GetFileInformationCommand extends AbstractFileCommand
 
     public function execute()
     {
-        echo $this->fileId;
-        $fileId = $this->fileId;
         $token = $this->token;
+        $fileId = $this->fileId;
         $url = "https://api.box.com/2.0/files/${fileId}";
-        $options = [
-        'headers' => [
-            'Authorization' => "Bearer ${token}",
-        ],
+        $body = [
+            'lock' => [
+                'type' => 'lock',
+                //TODO Lock Expiration Date
+                //TODO Lock Download Prevented
+            ],
         ];
-
+        $options = [
+            'body' => json_encode($body),
+            'headers' => [
+                'Authorization' => "Bearer ${token}",
+            ],
+        ];
         try {
             $client = new Client();
-            $req = $client->request('GET', $url, $options);
+            $req = $client->request('PUT', $url, $options);
 
             return ApiResponseFactory::build($req);
         } catch (ClientException $e) {

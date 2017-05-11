@@ -1,8 +1,8 @@
 <?php
 
-use LaravelBox\Factories\ApiResponseFactory;
-
 namespace LaravelBox\Commands\Files;
+
+use LaravelBox\Factories\ApiResponseFactory;
 
 class PreflightCheckCommand extends AbstractFileCommand
 {
@@ -18,14 +18,15 @@ class PreflightCheckCommand extends AbstractFileCommand
 
     public function execute()
     {
+        $token = $this->token;
         $cr = curl_init();
         $headers = [
             'Content-Type: multipart/form-data',
-            "Authorization: Bearer ${$this->token}",
+            "Authorization: Bearer ${token}",
         ];
         curl_setopt($cr, CURLOPT_CUSTOMREQUEST, 'OPTIONS');
         curl_setopt($cr, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($cr, CURLOPT_URL, 'https://api.box.com/api/2.0/files/content');
+        curl_setopt($cr, CURLOPT_URL, 'https://api.box.com/2.0/files/content');
         $fields = [
             'name' => basename($this->localPath),
             'parent' => [
@@ -34,7 +35,7 @@ class PreflightCheckCommand extends AbstractFileCommand
             'size' => filesize($this->localPath),
         ];
         curl_setopt($cr, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($cr, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($cr, CURLOPT_POSTFIELDS, json_encode($fields));
         try {
             $response = curl_exec($cr);
 

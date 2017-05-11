@@ -1,8 +1,13 @@
 <?php
 
-use LaravelBox\Factories\ApiResponseFactory;
-
 namespace LaravelBox\Commands\Files;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
+use LaravelBox\Factories\ApiResponseFactory;
 
 class CopyFileCommand extends AbstractFileCommand
 {
@@ -11,21 +16,28 @@ class CopyFileCommand extends AbstractFileCommand
     public function __construct(string $token, string $path, string $newPath)
     {
         $this->newPath = $newPath;
-        parent::__construct($token, $this->getFileId(basename($path)), $this->getFolderId(dirname($path)));
+        $this->token = $token;
+        $this->fileId = parent::getFileId($path);
+        $this->folderId = parent::getFolderId(dirname($path));
     }
 
     public function execute()
     {
-        $url = "https:/api.box.com/2.0/files/${$this->token}/copy";
+        $token = $this->token;
+        $fileId = $this->fileId;
+        $folderId = parent::getFolderId(dirname($this->newPath));
+        echo "FileID ${fileId}\n";
+        echo "FolderID ${folderId}\n";
+        $url = "https:/api.box.com/2.0/files/${fileId}/copy";
         $body = [
             'parent' => [
-                'id' => "${$this->getFolderId(dirname($this->newPath))}",
+                'id' => "${folderId}",
             ],
         ];
         $options = [
-            'body' => $body,
+            'body' => json_encode($body),
             'headers' => [
-                'Authorization' => "Bearer ${$this->token}",
+                'Authorization' => "Bearer ${token}",
             ],
         ];
         try {

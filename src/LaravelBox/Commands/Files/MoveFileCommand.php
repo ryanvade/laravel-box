@@ -1,8 +1,12 @@
 <?php
 
-use LaravelBox\Factories\ApiResponseFactory;
-
 namespace LaravelBox\Commands\Files;
+
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
+use LaravelBox\Factories\ApiResponseFactory;
 
 class MoveFileCommand extends AbstractFileCommand
 {
@@ -13,28 +17,32 @@ class MoveFileCommand extends AbstractFileCommand
     {
         $this->oldPath = $path;
         $this->newPath = $newPath;
-        parent::__construct($token, $this->getFileId(basename($path)), $this->getFolderId(dirname($path)));
+        $this->token = $token;
+        $this->fileId = parent::getFileId($path);
+        $this->folderId = parent::getFolderId(dirname($path));
     }
 
     public function execute()
     {
-        $url = "https://api.box.com/2.0/files/${$this->fileId}";
+        $fileId = $this->fileId;
+        $token = $this->token;
+        $url = "https://api.box.com/2.0/files/${fileId}";
         $body = [
             'name' => basename($this->newPath),
             'parent' => [
-                'id' => $this->getFolderId(dirname($newPath)),
+                'id' => $this->getFolderId(dirname($this->newPath)),
             ],
         ];
         $options = [
-            'header' => [
-            'Authorization' => "Bearer ${$this->token}",
+            'headers' => [
+            'Authorization' => "Bearer ${token}",
             ],
-            'body' => $body,
+            'body' => json_encode($body),
         ];
 
         try {
-            $client = new Client();
-            $req = $client->request('PUT', $url, $headers);
+            $client = new \GuzzleHttp\Client();
+            $req = $client->request('PUT', $url, $options);
 
             return ApiResponseFactory::build($req);
         } catch (ClientException $e) {

@@ -1,22 +1,32 @@
 <?php
 
-use LaravelBox\Factories\ApiResponseFactory;
-
 namespace LaravelBox\Commands\Files;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\TransferException;
+use LaravelBox\Factories\ApiResponseFactory;
 
 class FileTasksCommand extends AbstractFileCommand
 {
     public function __construct(string $token, string $path)
     {
-        parent::__construct($token, $this->getFileId(basename($path)), $this->getFolderId(dirname($path)));
+        $this->token = $token;
+        $this->fileId = parent::getFileId($path);
+        $this->folderId = parent::getFolderId(dirname($path));
     }
 
     public function execute()
     {
-        $url = "https://api.box.com/2.0/files/${$this->fileId}/tasks";
+        $token = $this->token;
+        $fileId = $this->fileId;
+
+        $url = "https://api.box.com/2.0/files/${fileId}/tasks";
         $options = [
             'headers' => [
-                'Authorization' => "Bearer ${$this->token}",
+                'Authorization' => "Bearer ${token}",
             ],
         ];
 
