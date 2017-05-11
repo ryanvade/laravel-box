@@ -1,6 +1,8 @@
-preset: laravel
+preset: symfony
 
 risky: false
+
+linting: true
 
 finder:
   exclude:

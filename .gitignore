@@ -1,1 +1,6 @@
 vendor/
+.php_cs*
+
+*.gif
+
+*.jpg
