@@ -2,6 +2,7 @@
 
 namespace LaravelBox;
 
+use LaravelBox\Factories\StreamCommandFactory;
 use LaravelBox\Factories\CommandFactory;
 
 class LaravelBox
@@ -37,6 +38,13 @@ class LaravelBox
     public function uploadFile(string $localPath, string $remotePath)
     {
         $command = CommandFactory::createFileCommand($this->token, $localPath, $remotePath, 'upload');
+
+        return $command->execute();
+    }
+
+    public function uploadContents($contents, string $remotePath)
+    {
+        $command = StreamCommandFactory::build($this->token, $contents, $remotePath, 'upload');
 
         return $command->execute();
     }

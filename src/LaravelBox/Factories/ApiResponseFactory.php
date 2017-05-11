@@ -17,6 +17,8 @@ class ApiResponseFactory
         }
 
         $arg = func_get_arg(0);
+        echo "ARG: ${arg}\n";
+        die();
         if (self::isAnException($arg)) {
             return self::getExceptionResponse($arg);
         }
