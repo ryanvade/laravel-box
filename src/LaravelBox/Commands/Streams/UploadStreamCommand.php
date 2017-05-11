@@ -2,12 +2,14 @@
 
 namespace LaravelBox\Commands\Streams;
 
-use \LaravelBox\Commands\AbstractCommand;
+use LaravelBox\Commands\AbstractCommand;
 use LaravelBox\Factories\ApiResponseFactory;
 
-class UploadStreamCommand extends AbstractCommand {
+class UploadStreamCommand extends AbstractCommand
+{
     private $contents;
     private $remotePath;
+
     public function __construct(string $token, $contents, string $remotePath)
     {
         $this->token = $token;
@@ -37,7 +39,7 @@ class UploadStreamCommand extends AbstractCommand {
         ]);
         $fields = [
             'attributes' => $json,
-            'file' => curl_file_create($meta["uri"], 'text/plain', basename($this->remotePath)),
+            'file' => curl_file_create($meta['uri'], 'text/plain', basename($this->remotePath)),
         ];
         curl_setopt($cr, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($cr, CURLOPT_POSTFIELDS, $fields);
