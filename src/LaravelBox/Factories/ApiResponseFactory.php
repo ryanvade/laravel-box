@@ -16,8 +16,7 @@ class ApiResponseFactory
             return null;
         }
 
-        if(func_num_args() == 2 && func_get_arg(1) instanceof \GuzzleHttp\PSr7\Stream)
-        {
+        if (func_num_args() == 2 && func_get_arg(1) instanceof \GuzzleHttp\PSr7\Stream) {
             return self::handleStreamResponse(func_get_arg(0), func_get_arg(1));
         }
 
@@ -171,7 +170,7 @@ class ApiResponseFactory
 
     private static function handleStreamResponse($arg, $stream)
     {
-        $type = "DOWNLOAD_STREAM";
+        $type = 'DOWNLOAD_STREAM';
         $code = $arg->getStatusCode();
         $reason = $arg->getReasonPhrase();
         $body = $arg->getBody();
@@ -184,6 +183,7 @@ class ApiResponseFactory
         $response->setJson($json); // is null when successful
         $stream->rewind();
         $response->setStream($stream);
+
         return $response;
     }
 }

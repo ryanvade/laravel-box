@@ -120,9 +120,16 @@ class LaravelBox
         return $command->execute();
     }
 
-    public function getFileThumbnail(string $path, string $outPath, string $extension)
+    public function downloadFileThumbnail(string $path, string $outPath, string $extension = 'png')
     {
         $command = CommandFactory::createFileCommand($this->token, $path, $outPath, $extension, 'thumbnail');
+
+        return $command->execute();
+    }
+
+    public function fileThumbnailStream(string $path, string $extension = 'png')
+    {
+        $command = StreamCommandFactory::build($this->token, $path, $extension, 'thumbnail');
 
         return $command->execute();
     }

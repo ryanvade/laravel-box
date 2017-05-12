@@ -6,6 +6,7 @@ use LaravelBox\Commands\Streams\UploadStreamCommand;
 use LaravelBox\Commands\Streams\DownloadStreamCommand;
 use LaravelBox\Commands\Streams\UploadStreamVersionCommand;
 use LaravelBox\Commands\Streams\UploadStreamContentsCommand;
+use LaravelBox\Commands\Streams\DownloadThumbnailStreamCommand;
 use LaravelBox\Commands\Streams\UploadStreamContentsVersionCommand;
 
 class StreamCommandFactory
@@ -50,12 +51,19 @@ class StreamCommandFactory
                 return new UploadStreamContentsVersionCommand($token, $contents, $remotePath);
                 break;
 
-
             case 'download':
                 $token = func_get_arg(0);
                 $path = func_get_arg(1);
 
                 return new DownloadStreamCommand($token, $path);
+                break;
+
+            case 'thumbnail':
+                $token = func_get_arg(0);
+                $path = func_get_arg(1);
+                $extension = func_get_arg(2);
+
+                return new DownloadThumbnailStreamCommand($token, $path, $extension);
                 break;
 
             default:
