@@ -16,9 +16,9 @@ use LaravelBox\Commands\Files\FileEmbeddedLinkCommand;
 use LaravelBox\Commands\Files\UploadFileVersionCommand;
 use LaravelBox\Commands\Files\GetFileInformationCommand;
 
-class CommandFactory
+class FileCommandFactory
 {
-    public static function createFileCommand()
+    public static function build()
     {
         if (func_num_args() <= 0) {
             return null;
