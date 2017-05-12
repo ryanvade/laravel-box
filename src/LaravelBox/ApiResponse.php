@@ -13,6 +13,7 @@ class ApiResponse
     private $reason = null;
     private $exception = null;
     private $fileName = null;
+    private $stream = null;
 
     public function __construct($type)
     {
@@ -107,5 +108,15 @@ class ApiResponse
     public function getFileName()
     {
         return $this->fileName;
+    }
+
+    public function getStream()
+    {
+        return $this->stream;
+    }
+
+    public function setStream($stream)
+    {
+        $this->stream = $stream;
     }
 }

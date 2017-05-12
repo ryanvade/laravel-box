@@ -35,6 +35,13 @@ class LaravelBox
         return $command->execute();
     }
 
+    public function fileStreamDownload(string $remotePath)
+    {
+        $command = StreamCommandFactory::build($this->token, $remotePath, 'download');
+
+        return $command->execute();
+    }
+
     public function uploadFile(string $localPath, string $remotePath)
     {
         $command = CommandFactory::createFileCommand($this->token, $localPath, $remotePath, 'upload');
@@ -52,6 +59,27 @@ class LaravelBox
     public function uploadFileVersion(string $localPath, string $remotePath)
     {
         $command = CommandFactory::createFileCommand($this->token, $localPath, $remotePath, 'upload-version');
+
+        return $command->execute();
+    }
+
+    public function uploadContentsVersion($contents, string $remotePath)
+    {
+        $command = StreamCommandFactory::build($this->token, $contents, $remotePath, 'upload-version');
+
+        return $command->execute();
+    }
+
+    public function uploadStreamContents($resource, string $remotePath)
+    {
+        $command = StreamCommandFactory::build($this->token, $resource, $remotePath, 'upload-stream');
+
+        return $command->execute();
+    }
+
+    public function uploadStreamContentsVersion($resource, string $remotePath)
+    {
+        $command = StreamCommandFactory::build($this->token, $resource, $remotePath, 'upload-stream-version');
 
         return $command->execute();
     }
