@@ -26,8 +26,6 @@ class CopyFileCommand extends AbstractFileCommand
         $token = $this->token;
         $fileId = $this->fileId;
         $folderId = parent::getFolderId(dirname($this->newPath));
-        echo "FileID ${fileId}\n";
-        echo "FolderID ${folderId}\n";
         $url = "https:/api.box.com/2.0/files/${fileId}/copy";
         $body = [
             'parent' => [

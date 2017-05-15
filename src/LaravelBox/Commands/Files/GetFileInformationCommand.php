@@ -17,7 +17,6 @@ class GetFileInformationCommand extends AbstractFileCommand
 
     public function execute()
     {
-        echo $this->fileId;
         $fileId = $this->fileId;
         $token = $this->token;
         $url = "https://api.box.com/2.0/files/${fileId}";

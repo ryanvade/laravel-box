@@ -16,7 +16,6 @@ abstract class AbstractCommand
     public function getFileId(string $path)
     {
         if (basename($path) == '') {
-            echo "Basename == ''";
 
             return -1;
         }
@@ -29,9 +28,7 @@ abstract class AbstractCommand
             // if not root
             $folderId = $this->getFolderId($folder);
         }
-        echo 'FolderID: '.$folderId."\n";
         if (($item_count = $this->getFolderItemCount($folderId)) < 0) {
-            echo 'Item count '.$item_count."\n";
 
             return -1;
         }
@@ -116,13 +113,11 @@ abstract class AbstractCommand
     public function getFolderItemCount($folderId)
     {
         if ($folderId < 0) {
-            echo "Folder ID < 0\n";
 
             return -1;
         }
 
         $token = $this->token;
-        echo 'TOKEN: '.$token."\n";
         $url = "https://api.box.com/2.0/folders/${folderId}";
         $options = [
             'headers' => [
@@ -136,9 +131,6 @@ abstract class AbstractCommand
 
             return $json->item_collection->total_count;
         } catch (ClientException $e) {
-            echo "Client Exception\n";
-            echo $e->getMessage();
-            echo "\n";
 
             return -1;
         }
