@@ -16,7 +16,6 @@ abstract class AbstractCommand
     public function getFileId(string $path)
     {
         if (basename($path) == '') {
-
             return -1;
         }
         // if (Cache::has($path)) {
@@ -29,7 +28,6 @@ abstract class AbstractCommand
             $folderId = $this->getFolderId($folder);
         }
         if (($item_count = $this->getFolderItemCount($folderId)) < 0) {
-
             return -1;
         }
         $fileId = -1;
@@ -113,7 +111,6 @@ abstract class AbstractCommand
     public function getFolderItemCount($folderId)
     {
         if ($folderId < 0) {
-
             return -1;
         }
 
@@ -131,7 +128,6 @@ abstract class AbstractCommand
 
             return $json->item_collection->total_count;
         } catch (ClientException $e) {
-
             return -1;
         }
     }

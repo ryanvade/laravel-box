@@ -21,38 +21,35 @@ class CreateFolderCommand extends AbstractFolderCommand
 
     public function execute()
     {
-        $folders = explode("/", $this->path);
+        $folders = explode('/', $this->path);
         $cnt = count($folders);
-        if($cnt <= 2) // /Something or /
-        {
+        if ($cnt <= 2) { // /Something or /
             return $this->createFolder(basename($this->path), 0);
         }
         $resp = null;
         $parentIds = array_fill(0, $cnt, 0);
-        for ($i=1; $i < $cnt; $i++) {
-            $tmpFolders = explode("/", $this->path);
-            $currPath = "/" . implode("/", array_splice($tmpFolders, 1, $i));
+        for ($i = 1; $i < $cnt; ++$i) {
+            $tmpFolders = explode('/', $this->path);
+            $currPath = '/'.implode('/', array_splice($tmpFolders, 1, $i));
             $folderId = parent::getFolderId($currPath);
-            if($folderId < 0)
-            {
+            if ($folderId < 0) {
                 $resp = $this->createFolder(basename($currPath), $parentIds[$i - 1]);
                 $parentIds[$i] = parent::getFolderId($currPath);
-            }else {
+            } else {
                 $parentIds[$i] = $folderId;
             }
-
         }
-        if($resp == null)
-        {
+        if ($resp == null) {
             $resp = $this->createFolder(basename($this->path), $parentIds[$cnt - 1]);
         }
+
         return $resp;
     }
 
     private function createFolder(string $name, $parentId)
     {
         $token = $this->token;
-        $url = "https://api.box.com/2.0/folders/";
+        $url = 'https://api.box.com/2.0/folders/';
         $options = [
             'body' => json_encode([
                 'name' => $name,
