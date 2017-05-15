@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelBox\Commands\Files;
+namespace LaravelBox\Commands\Folders;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -9,40 +9,36 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use LaravelBox\Factories\ApiResponseFactory;
 
-class CopyFileCommand extends AbstractFileCommand
+class DeleteFolderCommand extends AbstractFolderCommand
 {
-    private $newPath;
+    private $recursive;
 
-    public function __construct(string $token, string $path, string $newPath)
+    public function __construct(string $token, string $path, $recursive)
     {
-        $this->newPath = $newPath;
         $this->token = $token;
-        $this->fileId = parent::getFileId($path);
-        $this->folderId = parent::getFolderId(dirname($path));
+        $this->recursive = $recursive;
+        $this->folderId = parent::getFolderId($path);
     }
 
     public function execute()
     {
         $token = $this->token;
-        $fileId = $this->fileId;
-        $folderId = parent::getFolderId(dirname($this->newPath));
-        $url = "https:/api.box.com/2.0/files/${fileId}/copy";
-        $body = [
-            'parent' => [
-                'id' => "${folderId}",
-            ],
-        ];
+        $folderId = $this->folderId;
+        $recursive = $this->recursive;
+        $url = "https://api.box.com/2.0/folders/${folderId}";
         $options = [
-            'body' => json_encode($body),
+            'query' => [
+                'recursive' => ($recursive === true) ? 'true' : 'false',
+            ],
             'headers' => [
                 'Authorization' => "Bearer ${token}",
             ],
         ];
         try {
             $client = new Client();
-            $req = $client->request('POST', $url, $options);
+            $resp = $client->request('DELETE', $url, $options);
 
-            return ApiResponseFactory::build($req);
+            return ApiResponseFactory::build($resp);
         } catch (ClientException $e) {
             return ApiResponseFactory::build($e);
         } catch (ServerException $e) {

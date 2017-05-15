@@ -1,25 +1,24 @@
 <?php
 
-namespace LaravelBox\Commands\Files;
+namespace LaravelBox\Commands\Folders;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use LaravelBox\Factories\ApiResponseFactory;
 
-class GetFileInformationCommand extends AbstractFileCommand
+class GetFolderInformationCommand extends AbstractFolderCommand
 {
     public function __construct(string $token, string $path)
     {
         $this->token = $token;
-        $this->fileId = parent::getFileId($path);
         $this->folderId = parent::getFolderId(dirname($path));
     }
 
     public function execute()
     {
-        $fileId = $this->fileId;
+        $folderId = $this->fileId;
         $token = $this->token;
-        $url = "https://api.box.com/2.0/files/${fileId}";
+        $url = "https://api.box.com/2.0/folders/${folderId}";
         $options = [
         'headers' => [
             'Authorization' => "Bearer ${token}",

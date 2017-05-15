@@ -16,6 +16,10 @@ class ApiResponseFactory
             return null;
         }
 
+        if (func_num_args() == 2 && func_get_arg(1) instanceof \GuzzleHttp\PSr7\Stream) {
+            return self::handleStreamResponse(func_get_arg(0), func_get_arg(1));
+        }
+
         $arg = func_get_arg(0);
         if (self::isAnException($arg)) {
             return self::getExceptionResponse($arg);
@@ -162,5 +166,24 @@ class ApiResponseFactory
     private static function isJsonDownload($arg)
     {
         return $arg->hasHeader('Content-Type') && $arg->getHeaderLine('Content-Type') == 'application/octet-stream';
+    }
+
+    private static function handleStreamResponse($arg, $stream)
+    {
+        $type = 'DOWNLOAD_STREAM';
+        $code = $arg->getStatusCode();
+        $reason = $arg->getReasonPhrase();
+        $body = $arg->getBody();
+        $json = json_decode($body);
+
+        $response = new ApiResponse($type);
+        $response->setCode($code);
+        $response->setReason($reason);
+        $response->setBody($body); // Body is file contents if successful
+        $response->setJson($json); // is null when successful
+        $stream->rewind();
+        $response->setStream($stream);
+
+        return $response;
     }
 }

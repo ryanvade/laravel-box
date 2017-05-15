@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelBox\Commands\Files;
+namespace LaravelBox\Commands\Folders;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -9,40 +9,40 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use LaravelBox\Factories\ApiResponseFactory;
 
-class CopyFileCommand extends AbstractFileCommand
+class GetFolderItemsCommand extends AbstractFolderCommand
 {
-    private $newPath;
+    private $offset;
+    private $limit;
 
-    public function __construct(string $token, string $path, string $newPath)
+    public function __construct(string $token, string $path, int $offset, int $limit)
     {
-        $this->newPath = $newPath;
         $this->token = $token;
-        $this->fileId = parent::getFileId($path);
-        $this->folderId = parent::getFolderId(dirname($path));
+        $this->folderId = parent::getFolderId($path);
+        $this->offset = $offset;
+        $this->limit = $limit;
     }
 
     public function execute()
     {
         $token = $this->token;
-        $fileId = $this->fileId;
-        $folderId = parent::getFolderId(dirname($this->newPath));
-        $url = "https:/api.box.com/2.0/files/${fileId}/copy";
-        $body = [
-            'parent' => [
-                'id' => "${folderId}",
-            ],
-        ];
+        $folderId = $this->folderId;
+        $offset = $this->offset;
+        $limit = $this->limit;
+        $url = "https://api.box.com/2.0/folders/${folderId}/items";
         $options = [
-            'body' => json_encode($body),
+            'query' => [
+                'offset' => ($offset >= 0) ? $offset : 0,
+                'limit' => ($limit >= 1) ? ($limit <= 1000) ? $limit : 1000 : 1,
+            ],
             'headers' => [
                 'Authorization' => "Bearer ${token}",
             ],
         ];
         try {
             $client = new Client();
-            $req = $client->request('POST', $url, $options);
+            $resp = $client->request('GET', $url, $options);
 
-            return ApiResponseFactory::build($req);
+            return ApiResponseFactory::build($resp);
         } catch (ClientException $e) {
             return ApiResponseFactory::build($e);
         } catch (ServerException $e) {

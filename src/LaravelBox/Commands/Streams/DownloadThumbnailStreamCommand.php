@@ -1,48 +1,44 @@
 <?php
 
-namespace LaravelBox\Commands\Files;
+namespace LaravelBox\Commands\Streams;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\TransferException;
+use function GuzzleHttp\Psr7\stream_for;
+use LaravelBox\Commands\AbstractCommand;
 use LaravelBox\Factories\ApiResponseFactory;
 
-class CopyFileCommand extends AbstractFileCommand
+class DownloadThumbnailStreamCommand extends AbstractCommand
 {
-    private $newPath;
+    private $extension;
 
-    public function __construct(string $token, string $path, string $newPath)
+    public function __construct(string $token, string $path, string $extension)
     {
-        $this->newPath = $newPath;
         $this->token = $token;
         $this->fileId = parent::getFileId($path);
         $this->folderId = parent::getFolderId(dirname($path));
+        $this->extension = $extension;
     }
 
     public function execute()
     {
-        $token = $this->token;
         $fileId = $this->fileId;
-        $folderId = parent::getFolderId(dirname($this->newPath));
-        $url = "https:/api.box.com/2.0/files/${fileId}/copy";
-        $body = [
-            'parent' => [
-                'id' => "${folderId}",
-            ],
-        ];
+        $token = $this->token;
+        $extension = $this->extension;
+        $url = "https://api.box.com/2.0/files/${fileId}/thumbnail.${extension}";
+        $tmpFile = tmpfile();
+        $stream = stream_for($tmpFile);
         $options = [
-            'body' => json_encode($body),
+            'sink' => $stream,
             'headers' => [
                 'Authorization' => "Bearer ${token}",
             ],
         ];
+
         try {
             $client = new Client();
-            $req = $client->request('POST', $url, $options);
+            $resp = $client->request('GET', $url, $options);
 
-            return ApiResponseFactory::build($req);
+            return ApiResponseFactory::build($resp, $stream);
         } catch (ClientException $e) {
             return ApiResponseFactory::build($e);
         } catch (ServerException $e) {
