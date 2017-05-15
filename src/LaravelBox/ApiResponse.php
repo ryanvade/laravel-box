@@ -119,4 +119,18 @@ class ApiResponse
     {
         $this->stream = $stream;
     }
+
+    public function toArray()
+    {
+        $arr = array();
+        $arr["code"] = $this->code;
+        $arr["body"] = $this->body;
+        $arr["json"] = $this->json;
+        if($this->stream != null)
+        {
+            $arr["stream"] = $this->stream;
+        }
+
+        return $arr;
+    }
 }

@@ -4,9 +4,10 @@ namespace LaravelBox\Helpers;
 
 use LaravelBox\Commands\AbstractCommand;
 
-class FolderItemCount extends AbstractCommand {
-
+class FolderItemCount extends AbstractCommand
+{
     private $folderId;
+
     public function __construct(string $token, string $path)
     {
         $this->token = $token;
@@ -17,7 +18,7 @@ class FolderItemCount extends AbstractCommand {
     {
         $token = $this->token;
         $folderId = $this->folderId;
-        if($folderId < 0) {
+        if ($folderId < 0) {
             return -1;
         }
 
