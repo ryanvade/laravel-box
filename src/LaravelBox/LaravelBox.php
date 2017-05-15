@@ -2,6 +2,7 @@
 
 namespace LaravelBox;
 
+use LaravelBox\Helpers\FolderItemCount;
 use LaravelBox\Factories\FileCommandFactory;
 use LaravelBox\Factories\FolderCommandFactory;
 use LaravelBox\Factories\StreamCommandFactory;
@@ -173,6 +174,13 @@ class LaravelBox
     public function getFolderItems(string $path, int $offset = 0, int $limit = 100)
     {
         $command = FolderCommandFactory::build($this->token, $path, $offset, $limit, 'list');
+
+        return $command->execute();
+    }
+
+    public function getFolderItemsCount(string $path)
+    {
+        $command = new FolderItemCount($this->token, $path);
 
         return $command->execute();
     }
