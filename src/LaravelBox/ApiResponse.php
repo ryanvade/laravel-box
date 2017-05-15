@@ -123,12 +123,11 @@ class ApiResponse
     public function toArray()
     {
         $arr = array();
-        $arr["code"] = $this->code;
-        $arr["body"] = $this->body;
-        $arr["json"] = $this->json;
-        if($this->stream != null)
-        {
-            $arr["stream"] = $this->stream;
+        $arr['code'] = $this->code;
+        $arr['body'] = $this->body;
+        $arr['json'] = $this->json;
+        if ($this->stream != null) {
+            $arr['stream'] = $this->stream;
         }
 
         return $arr;
