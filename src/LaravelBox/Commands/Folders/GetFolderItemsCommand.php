@@ -33,6 +33,7 @@ class GetFolderItemsCommand extends AbstractFolderCommand
             'query' => [
                 'offset' => ($offset >= 0) ? $offset : 0,
                 'limit' => ($limit >= 1) ? ($limit <= 1000) ? $limit : 1000 : 1,
+		'fields' => 'modified_at,path_collection,name,size',
             ],
             'headers' => [
                 'Authorization' => "Bearer ${token}",
