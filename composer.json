@@ -1,5 +1,5 @@
 {
-    "name": "archrival-lnk/laravel-box",
+    "name": "ryanvade/laravel-box",
     "description": "A Box.com API wrapper for Laravel.",
     "version": "0.0.1",
     "type": "library",
@@ -14,8 +14,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Archrival",
-            "email": "info@archrival.com"
+            "name": "Ryan Owens",
+            "email": "RyanOwens@linux.com"
         }
     ],
     "autoload": {
