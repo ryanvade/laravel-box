@@ -14,12 +14,17 @@ class GetFolderItemsCommand extends AbstractFolderCommand
     private $offset;
     private $limit;
 
-    public function __construct(string $token, string $path, int $offset, int $limit)
+    public function __construct(string $token, string $path, array $params, int $offset, int $limit)
     {
         $this->token = $token;
         $this->folderId = parent::getFolderId($path);
         $this->offset = $offset;
         $this->limit = $limit;
+        $this->params = $params;
+
+        if (empty($this->params)) {
+          $this->params = ['fields' => 'modified_at,path_collection,name,size'];
+        }
     }
 
     public function execute()
@@ -28,12 +33,12 @@ class GetFolderItemsCommand extends AbstractFolderCommand
         $folderId = $this->folderId;
         $offset = $this->offset;
         $limit = $this->limit;
+        $params = $this->params;
         $url = "https://api.box.com/2.0/folders/${folderId}/items";
         $options = [
             'query' => [
                 'offset' => ($offset >= 0) ? $offset : 0,
                 'limit' => ($limit >= 1) ? ($limit <= 1000) ? $limit : 1000 : 1,
-		'fields' => 'modified_at,path_collection,name,size',
             ],
             'headers' => [
                 'Authorization' => "Bearer ${token}",
