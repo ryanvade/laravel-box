@@ -1,5 +1,5 @@
 {
-    "name": "Archrival-LNK/laravel-box",
+    "name": "archrival-lnk/laravel-box",
     "description": "A Box.com API wrapper for Laravel.",
     "version": "0.0.1",
     "type": "library",
