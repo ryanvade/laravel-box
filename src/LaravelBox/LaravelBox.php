@@ -6,6 +6,7 @@ use LaravelBox\Helpers\FolderItemCount;
 use LaravelBox\Factories\FileCommandFactory;
 use LaravelBox\Factories\FolderCommandFactory;
 use LaravelBox\Factories\StreamCommandFactory;
+use LaravelBox\Commands\Search\SearchCommand;
 
 class LaravelBox
 {
@@ -182,6 +183,12 @@ class LaravelBox
     {
         $command = new FolderItemCount($this->token, $path);
 
+        return $command->execute();
+    }
+
+    public function search(string $search, array $params = [], int $offset = 0, int $limit = 100)
+    {
+        $command = new SearchCommand($this->token, $search, $offset, $limit, $params);
         return $command->execute();
     }
 }
