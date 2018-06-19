@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelBox\Factories;
+namespace LaravelBox;
 
 use LaravelBox\ApiResponse;
 use GuzzleHttp\Exception\ServerException;
