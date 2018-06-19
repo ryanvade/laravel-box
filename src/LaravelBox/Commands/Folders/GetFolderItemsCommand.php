@@ -44,6 +44,8 @@ class GetFolderItemsCommand extends AbstractFolderCommand
                 'Authorization' => "Bearer ${token}",
             ],
         ];
+        $options['query'] = array_merge($options['query'], $params);
+        
         try {
             $client = new Client();
             $resp = $client->request('GET', $url, $options);
