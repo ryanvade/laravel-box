@@ -7,6 +7,8 @@ use LaravelBox\Factories\FileCommandFactory;
 use LaravelBox\Factories\FolderCommandFactory;
 use LaravelBox\Factories\StreamCommandFactory;
 use LaravelBox\Commands\Search\SearchCommand;
+use LaravelBox\Factories\MetadataTemplateCommandFactory;
+use LaravelBox\Factories\MetadataFileCommandFactory;
 
 class LaravelBox
 {
@@ -189,6 +191,41 @@ class LaravelBox
     public function search(string $search, array $params = [], int $offset = 0, int $limit = 100)
     {
         $command = new SearchCommand($this->token, $search, $offset, $limit, $params);
+        return $command->execute();
+    }
+
+    public function createMetadataOnFile($fileId, $templateKey, $metadata)
+    {
+        $command = MetadataFileCommandFactory::build($this->token, $fileId, $templateKey, $metadata, 'create');
+
+        return $command->execute();
+    }
+
+    public function updateMetadataOnFile($fileId, $templateKey, $metadata)
+    {
+        $command = MetadataFileCommandFactory::build($this->token, $fileId, $templateKey, $metadata, 'update');
+
+        return $command->execute();
+    }
+
+    public function getMetadataOnFile($fileId, $templateKey)
+    {
+        $command = MetadataFileCommandFactory::build($this->token, $fileId, $templateKey, 'get');
+
+        return $command->execute();
+    }
+
+    public function createMetadataTemplate($template)
+    {
+        $command = MetadataTemplateCommandFactory::build($this->token, $template, 'create');
+
+        return $command->execute();
+    }
+
+    public function getMetadataTemplates()
+    {
+        $command = MetadataTemplateCommandFactory::build($this->token, 'list');
+
         return $command->execute();
     }
 }
