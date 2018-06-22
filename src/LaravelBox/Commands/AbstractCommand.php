@@ -15,7 +15,10 @@ abstract class AbstractCommand
 
     public function getFileId(string $path)
     {
-        if (basename($path) == '') {
+        if (is_numeric($path)) {
+          return (int)$path;
+        }
+        else if (basename($path) == '') {
             return -1;
         }
         // if (Cache::has($path)) {
