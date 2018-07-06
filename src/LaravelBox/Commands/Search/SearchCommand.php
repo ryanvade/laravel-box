@@ -14,6 +14,7 @@ class SearchCommand extends AbstractCommand
 {
     private $offset;
     private $limit;
+    private $params;
 
     public function __construct(string $token, string $search, int $offset, int $limit, array $params)
     {
@@ -22,7 +23,7 @@ class SearchCommand extends AbstractCommand
         $this->offset = $offset;
         $this->limit = $limit;
         $this->params = $params;
-        
+
         if (empty($this->params)) {
           $this->params = ['fields' => 'modified_at,path_collection,name,size'];
         }
@@ -39,7 +40,7 @@ class SearchCommand extends AbstractCommand
 
         $options = [
             'query' => [
-                'query' => $search,
+                //'query' => $search,
                 'offset' => ($offset >= 0) ? $offset : 0,
                 'limit' => ($limit >= 1) ? ($limit <= 1000) ? $limit : 1000 : 1,
             ],
