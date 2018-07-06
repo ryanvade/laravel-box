@@ -26,6 +26,13 @@ class LaravelBox
         return $command->execute();
     }
 
+    public function tagFile(string $path, array $tags)
+    {
+        $command = FileCommandFactory::build($this->token, $path, $tags, 'tag');
+
+        return $command->execute();
+    }
+
     public function fileInformation(string $path)
     {
         $command = FileCommandFactory::build($this->token, $path, 'info');

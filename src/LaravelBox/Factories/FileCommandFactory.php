@@ -15,6 +15,7 @@ use LaravelBox\Commands\Files\PreflightCheckCommand;
 use LaravelBox\Commands\Files\FileEmbeddedLinkCommand;
 use LaravelBox\Commands\Files\UploadFileVersionCommand;
 use LaravelBox\Commands\Files\GetFileInformationCommand;
+use LaravelBox\Commands\Files\TagFileCommand;
 
 class FileCommandFactory
 {
@@ -182,6 +183,18 @@ class FileCommandFactory
 
             return new FileTasksCommand($token, $path);
             break;
+
+            case 'tag':
+            if (func_num_args() < 3) {
+                return null;
+            }
+            $token = func_get_arg(0);
+            $path = func_get_arg(1);
+            $tags = func_get_arg(2);
+
+            return new TagFileCommand($token, $path, $tags);
+            break;
+
             default:
                 return null;
                 break;
