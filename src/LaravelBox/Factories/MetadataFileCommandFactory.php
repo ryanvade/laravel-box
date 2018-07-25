@@ -40,6 +40,13 @@ class MetadataFileCommandFactory
                 return new GetMetadataOnFileCommand($token, $fileId, $templateKey);
                 break;
 
+            case 'delete':
+                $token = func_get_arg(0);
+                $fileId = func_get_arg(1);
+                $templateKey = func_get_arg(2);
+                return new DeleteMetadataOnFileCommand($token, $fileId, $templateKey);
+                break;
+
             default:
                 return null;
         }

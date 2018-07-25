@@ -222,6 +222,13 @@ class LaravelBox
         return $command->execute();
     }
 
+    public function deleteMetadataOnFile($fileId, $templateKey)
+    {
+        $command = MetadataFileCommandFactory::build($this->token, $fileId, $templateKey, 'delete');
+
+        return $command->execute();
+    }
+
     public function createMetadataTemplate($template)
     {
         $command = MetadataTemplateCommandFactory::build($this->token, $template, 'create');
@@ -236,3 +243,4 @@ class LaravelBox
         return $command->execute();
     }
 }
+sd
