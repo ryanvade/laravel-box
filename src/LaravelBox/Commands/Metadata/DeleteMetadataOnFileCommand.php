@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use LaravelBox\Factories\ApiResponseFactory;
 
-class GetMetadataOnFileCommand extends AbstractMetadataTemplateCommand
+class DeleteMetadataOnFileCommand extends AbstractMetadataTemplateCommand
 {
     private $metadata;
     private $fileId;

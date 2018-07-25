@@ -5,6 +5,7 @@ namespace LaravelBox\Factories;
 use LaravelBox\Commands\Metadata\CreateMetadataOnFileCommand;
 use LaravelBox\Commands\Metadata\UpdateMetadataOnFileCommand;
 use LaravelBox\Commands\Metadata\GetMetadataOnFileCommand;
+use LaravelBox\Commands\Metadata\DeleteMetadataOnFileCommand;
 use LaravelBox\Commands\Metadata\GetEnterpriseMetadataTemplates;
 
 class MetadataFileCommandFactory
