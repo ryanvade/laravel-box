@@ -40,7 +40,7 @@ class SearchCommand extends AbstractCommand
 
         $options = [
             'query' => [
-                //'query' => $search,
+                'query' => $search,
                 'offset' => ($offset >= 0) ? $offset : 0,
                 'limit' => ($limit >= 1) ? ($limit <= 1000) ? $limit : 1000 : 1,
             ],
