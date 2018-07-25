@@ -243,4 +243,3 @@ class LaravelBox
         return $command->execute();
     }
 }
-sd
