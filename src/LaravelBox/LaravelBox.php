@@ -6,6 +6,9 @@ use LaravelBox\Helpers\FolderItemCount;
 use LaravelBox\Factories\FileCommandFactory;
 use LaravelBox\Factories\FolderCommandFactory;
 use LaravelBox\Factories\StreamCommandFactory;
+use LaravelBox\Commands\Search\SearchCommand;
+use LaravelBox\Factories\MetadataTemplateCommandFactory;
+use LaravelBox\Factories\MetadataFileCommandFactory;
 
 class LaravelBox
 {
@@ -19,6 +22,13 @@ class LaravelBox
     public function moveFile(string $path, string $newPath)
     {
         $command = FileCommandFactory::build($this->token, $path, $newPath, 'move');
+
+        return $command->execute();
+    }
+
+    public function tagFile(string $path, array $tags)
+    {
+        $command = FileCommandFactory::build($this->token, $path, $tags, 'tag');
 
         return $command->execute();
     }
@@ -171,9 +181,9 @@ class LaravelBox
         return $command->execute();
     }
 
-    public function getFolderItems(string $path, int $offset = 0, int $limit = 100)
+    public function getFolderItems(string $path, array $params = [], int $offset = 0, int $limit = 100)
     {
-        $command = FolderCommandFactory::build($this->token, $path, $offset, $limit, 'list');
+        $command = FolderCommandFactory::build($this->token, $path, $params, $offset, $limit, 'list');
 
         return $command->execute();
     }
@@ -181,6 +191,54 @@ class LaravelBox
     public function getFolderItemsCount(string $path)
     {
         $command = new FolderItemCount($this->token, $path);
+
+        return $command->execute();
+    }
+
+    public function search(string $search, array $params = [], int $offset = 0, int $limit = 100)
+    {
+        $command = new SearchCommand($this->token, $search, $offset, $limit, $params);
+        return $command->execute();
+    }
+
+    public function createMetadataOnFile($fileId, $templateKey, $metadata)
+    {
+        $command = MetadataFileCommandFactory::build($this->token, $fileId, $templateKey, $metadata, 'create');
+
+        return $command->execute();
+    }
+
+    public function updateMetadataOnFile($fileId, $templateKey, $metadata)
+    {
+        $command = MetadataFileCommandFactory::build($this->token, $fileId, $templateKey, $metadata, 'update');
+
+        return $command->execute();
+    }
+
+    public function getMetadataOnFile($fileId, $templateKey)
+    {
+        $command = MetadataFileCommandFactory::build($this->token, $fileId, $templateKey, 'get');
+
+        return $command->execute();
+    }
+
+    public function deleteMetadataOnFile($fileId, $templateKey)
+    {
+        $command = MetadataFileCommandFactory::build($this->token, $fileId, $templateKey, 'delete');
+
+        return $command->execute();
+    }
+
+    public function createMetadataTemplate($template)
+    {
+        $command = MetadataTemplateCommandFactory::build($this->token, $template, 'create');
+
+        return $command->execute();
+    }
+
+    public function getMetadataTemplates()
+    {
+        $command = MetadataTemplateCommandFactory::build($this->token, 'list');
 
         return $command->execute();
     }

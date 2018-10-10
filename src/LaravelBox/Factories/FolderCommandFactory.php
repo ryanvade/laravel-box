@@ -33,10 +33,11 @@ class FolderCommandFactory
             case 'list':
                 $token = func_get_arg(0);
                 $path = func_get_arg(1);
-                $offset = func_get_arg(2);
-                $limit = func_get_arg(3);
+                $params = func_get_arg(2);
+                $offset = func_get_arg(3);
+                $limit = func_get_arg(4);
 
-                return new GetFolderItemsCommand($token, $path, $offset, $limit);
+                return new GetFolderItemsCommand($token, $path, $params, $offset, $limit);
                 break;
 
             default:

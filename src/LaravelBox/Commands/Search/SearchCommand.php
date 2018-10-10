@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelBox\Commands\Folders;
+namespace LaravelBox\Commands\Search;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -8,16 +8,18 @@ use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\TransferException;
 use LaravelBox\Factories\ApiResponseFactory;
+use LaravelBox\Commands\AbstractCommand;
 
-class GetFolderItemsCommand extends AbstractFolderCommand
+class SearchCommand extends AbstractCommand
 {
     private $offset;
     private $limit;
+    private $params;
 
-    public function __construct(string $token, string $path, array $params, int $offset, int $limit)
+    public function __construct(string $token, string $search, int $offset, int $limit, array $params)
     {
         $this->token = $token;
-        $this->folderId = parent::getFolderId($path);
+        $this->search = $search;
         $this->offset = $offset;
         $this->limit = $limit;
         $this->params = $params;
@@ -30,13 +32,15 @@ class GetFolderItemsCommand extends AbstractFolderCommand
     public function execute()
     {
         $token = $this->token;
-        $folderId = $this->folderId;
+        $search = $this->search;
         $offset = $this->offset;
         $limit = $this->limit;
         $params = $this->params;
-        $url = "https://api.box.com/2.0/folders/${folderId}/items";
+        $url = "https://api.box.com/2.0/search";
+
         $options = [
             'query' => [
+                'query' => $search,
                 'offset' => ($offset >= 0) ? $offset : 0,
                 'limit' => ($limit >= 1) ? ($limit <= 1000) ? $limit : 1000 : 1,
             ],
@@ -45,7 +49,7 @@ class GetFolderItemsCommand extends AbstractFolderCommand
             ],
         ];
         $options['query'] = array_merge($options['query'], $params);
-        
+
         try {
             $client = new Client();
             $resp = $client->request('GET', $url, $options);
